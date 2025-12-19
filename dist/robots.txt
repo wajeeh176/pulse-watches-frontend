@@ -1,0 +1,22 @@
+# robots.txt for Pulse Watches
+
+# Allow all search engines to crawl all public pages
+User-agent: *
+Allow: /
+Allow: /about
+Allow: /contact
+Allow: /product/
+
+# Block admin and private pages
+Disallow: /admin/
+Disallow: /checkout
+Disallow: /orders
+Disallow: /login
+Disallow: /register
+Disallow: /cart
+
+# Block API endpoints
+Disallow: /api/
+
+# Sitemap location
+Sitemap: https://pulsewatches.pk/sitemap.xml
