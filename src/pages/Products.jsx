@@ -18,13 +18,26 @@ export default function Products() {
   useEffect(() => {
     let mounted = true;
     setLoading(true);
+    console.log('Products: Starting API request to /products');
     API.get('/products')
       .then(res => {
         if (!mounted) return;
+        console.log('Products: API request successful', res.data);
         setProducts(res.data || []);
       })
-      .catch(err => console.error('Failed to fetch products:', err))
-      .finally(() => mounted && setLoading(false));
+      .catch(err => {
+        console.error('Products: Failed to fetch products:', err);
+        console.error('Products: Error details:', {
+          message: err.message,
+          response: err.response,
+          config: err.config
+        });
+        // Set empty array on error to prevent infinite loading
+        if (mounted) setProducts([]);
+      })
+      .finally(() => {
+        if (mounted) setLoading(false);
+      });
     return () => { mounted = false; };
   }, []);
 
