@@ -65,10 +65,6 @@
       img[fetchpriority="high"]{content-visibility:auto}
     </style>
     
-    <!-- Preload Critical JavaScript Entry Point -->
-    <!-- Load after image but in parallel -->
-    <link rel="modulepreload" href="/src/main.jsx" as="script" crossorigin />
-    
     <!-- Font loading - Fully deferred to not block LCP -->
     <!-- Load font CSS asynchronously after page load -->
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&display=swap" as="style" />
@@ -93,32 +89,9 @@
   </head>
   <body>
     <div id="root"></div>
-    <!-- Defer JavaScript execution to improve FCP and LCP -->
-    <!-- Load JS after LCP image has started loading -->
-    <script>
-      // Defer JavaScript until after critical image starts loading
-      // This ensures LCP image gets network priority
-      (function() {
-        // Use requestIdleCallback to delay JS, but with timeout for faster sites
-        if (window.requestIdleCallback) {
-          requestIdleCallback(function() {
-            const script = document.createElement('script');
-            script.type = 'module';
-            script.src = '/src/main.jsx';
-            script.async = true;
-            document.body.appendChild(script);
-          }, { timeout: 100 });
-        } else {
-          // Fallback: minimal delay to let image start loading
-          setTimeout(function() {
-            const script = document.createElement('script');
-            script.type = 'module';
-            script.src = '/src/main.jsx';
-            script.async = true;
-            document.body.appendChild(script);
-          }, 0);
-        }
-      })();
-    </script>
+    <!-- Vite will automatically transform this during build -->
+    <!-- In development, this loads /src/main.jsx -->
+    <!-- In production, Vite replaces it with the built file path -->
+    <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

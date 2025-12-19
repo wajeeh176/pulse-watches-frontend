@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Ensure baseURL always includes /api
-let baseURL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+let baseURL = import.meta.env.VITE_API_URL || 'https://pulse-watches-backend.vercel.app/api';
 
 // Fix: Ensure baseURL always ends with /api
 if (baseURL && !baseURL.endsWith('/api')) {
