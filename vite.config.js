@@ -10,45 +10,53 @@ export default defineConfig({
   ],
   server: { port: 5173 },
   build: {
+    // Use terser with very conservative settings to avoid breaking Emotion's circular dependencies
     minify: 'terser',
     terserOptions: {
       compress: {
         drop_console: true,
         drop_debugger: true,
-        pure_funcs: ['console.log', 'console.info', 'console.debug', 'console.warn', 'console.error'],
-        passes: 2, // Reduced passes to avoid breaking circular dependencies
-        unsafe: false, // Disable unsafe optimizations that break Emotion
+        // Minimal compression to avoid breaking circular dependencies
+        passes: 1,
+        unsafe: false,
         unsafe_comps: false,
         unsafe_math: false,
-        // Aggressive dead code elimination
-        dead_code: true,
-        unused: true,
-        // Code optimization for tree-shaking
-        evaluate: true,
-        booleans: true,
-        collapse_vars: true,
-        reduce_vars: true,
-        reduce_funcs: true,
-        properties: true,
-        sequences: true,
-        side_effects: false, // Allow side effects for React, but tree-shake unused exports
-        toplevel: false, // Disable toplevel optimization to avoid breaking Emotion
-        // Remove unreachable code
+        unsafe_methods: false,
+        unsafe_proto: false,
+        unsafe_regexp: false,
+        unsafe_undefined: false,
+        // Disable all variable-related optimizations that break circular deps
+        dead_code: false, // Don't remove dead code that might be needed for init order
+        evaluate: false, // Don't evaluate expressions that might affect init order
+        collapse_vars: false,
+        reduce_vars: false,
+        reduce_funcs: false,
+        // Minimal safe optimizations
+        booleans: false, // Disable to be safe
         if_return: true,
-        loops: true,
+        loops: false, // Disable loop optimizations
+        sequences: false, // Don't reorder sequences
         switches: true,
+        // Preserve side effects and initialization order
+        side_effects: true,
+        toplevel: false,
+        // Disable hoisting that might break init order
+        hoist_funs: false,
+        hoist_vars: false,
+        keep_infinity: true,
+        keep_fargs: true, // Keep function arguments
       },
-      mangle: {
-        toplevel: false, // Don't mangle top-level to avoid breaking Emotion
-        properties: false, // Keep property names for React/MUI compatibility
-        reserved: ['e', 'emotion', 'emotionCache'], // Reserve Emotion-related names
-      },
+      mangle: false, // Disable ALL mangling to prevent breaking Emotion's circular dependencies
+      // mangle: {
+      //   toplevel: false,
+      //   properties: false,
+      //   reserved: ['e', 't', 'X', 'Y', 'Z', 'ft', 'emotion', 'emotionCache', 'css', 'keyframes'],
+      // },
       format: {
-        comments: false, // Remove all comments
-        ecma: 2020, // Target modern ECMAScript for better tree-shaking
+        comments: false,
       },
-      ecma: 2020, // Target modern ECMAScript
-      module: true, // Treat as ES module for better tree-shaking
+      ecma: 2020,
+      module: true,
     },
     cssCodeSplit: true,
     sourcemap: false,
@@ -77,30 +85,15 @@ export default defineConfig({
         // Optimize chunk splitting to reduce chain depth
         // Split into smaller, loadable-in-parallel chunks
         manualChunks: (id) => {
-          // React core - smallest, loads first (foundation)
-          if (id.includes('node_modules/react') || id.includes('node_modules/react-dom')) {
-            return 'react-core';
-          }
-          // React Router - can load in parallel with MUI
-          if (id.includes('node_modules/react-router-dom')) {
-            return 'react-router';
-          }
-          // MUI core - split from icons for parallel loading and better tree-shaking
-          if (id.includes('node_modules/@mui/material')) {
-            return 'mui-core';
-          }
-          // MUI icons - defer loading (not critical for initial render)
-          // Split to enable tree-shaking of unused icons
-          if (id.includes('node_modules/@mui/icons-material')) {
-            return 'mui-icons';
-          }
-          // Emotion - MUI dependency, but can load after initial render
-          if (id.includes('node_modules/@emotion')) {
-            return 'emotion';
-          }
-          // Other vendor libraries - defer
+          // Put ALL node_modules in one chunk to ensure React is always available
+          // This prevents "React is undefined" errors from chunk loading order issues
           if (id.includes('node_modules')) {
-            return 'vendor';
+            // MUI icons can be separate as they're lazy loaded
+            if (id.includes('node_modules/@mui/icons-material')) {
+              return 'mui-icons';
+            }
+            // Everything else goes in react-mui-core to ensure React is available
+            return 'react-mui-core';
           }
         },
         // Optimize chunk file names
@@ -138,8 +131,10 @@ export default defineConfig({
   esbuild: {
     treeShaking: true,
     legalComments: 'none',
-    minifyIdentifiers: true,
+    // Keep identifiers for Emotion to avoid circular dependency issues
+    minifyIdentifiers: false,
     minifySyntax: true,
     minifyWhitespace: true,
+    drop: ['console', 'debugger'], // Drop console and debugger statements
   },
 })
