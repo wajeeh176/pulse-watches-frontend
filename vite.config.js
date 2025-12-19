@@ -3,7 +3,10 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [
-    react(),
+    react({
+      // Emotion is automatically handled by @vitejs/plugin-react
+      // The babel plugin will be used if @emotion/babel-plugin is installed
+    }),
   ],
   server: { port: 5173 },
   build: {
@@ -13,10 +16,10 @@ export default defineConfig({
         drop_console: true,
         drop_debugger: true,
         pure_funcs: ['console.log', 'console.info', 'console.debug', 'console.warn', 'console.error'],
-        passes: 3, // Multiple passes for better dead code elimination
-        unsafe: true,
-        unsafe_comps: true,
-        unsafe_math: true,
+        passes: 2, // Reduced passes to avoid breaking circular dependencies
+        unsafe: false, // Disable unsafe optimizations that break Emotion
+        unsafe_comps: false,
+        unsafe_math: false,
         // Aggressive dead code elimination
         dead_code: true,
         unused: true,
@@ -29,15 +32,16 @@ export default defineConfig({
         properties: true,
         sequences: true,
         side_effects: false, // Allow side effects for React, but tree-shake unused exports
-        toplevel: true, // Enable tree-shaking at top level
+        toplevel: false, // Disable toplevel optimization to avoid breaking Emotion
         // Remove unreachable code
         if_return: true,
         loops: true,
         switches: true,
       },
       mangle: {
-        toplevel: true, // Mangle top-level variable names for better tree-shaking
+        toplevel: false, // Don't mangle top-level to avoid breaking Emotion
         properties: false, // Keep property names for React/MUI compatibility
+        reserved: ['e', 'emotion', 'emotionCache'], // Reserve Emotion-related names
       },
       format: {
         comments: false, // Remove all comments
@@ -53,8 +57,14 @@ export default defineConfig({
       // Enable tree-shaking by marking all exports as side-effect free where possible
       treeshake: {
         moduleSideEffects: (id) => {
-          // Allow side effects only for CSS files and entry points
-          if (id.endsWith('.css') || id.includes('/styles/') || id.includes('main.jsx')) {
+          // Allow side effects for CSS files, entry points, and Emotion
+          if (
+            id.endsWith('.css') || 
+            id.includes('/styles/') || 
+            id.includes('main.jsx') ||
+            id.includes('@emotion') ||
+            id.includes('emotion')
+          ) {
             return true;
           }
           // Assume no side effects for other modules (enables tree-shaking)
