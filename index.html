@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    
+    <!-- Primary Meta Tags -->
+    <title>Pulse Watches - Premium Luxury Watches in Pakistan</title>
+    <meta name="title" content="Pulse Watches - Premium Luxury Watches in Pakistan" />
+    <meta name="description" content="Discover authentic luxury timepieces from world-renowned brands at Pulse Watches. Premium watches with fast delivery across Pakistan. 100% authentic, cash on delivery." />
+    <meta name="keywords" content="luxury watches, premium watches, rolex, patek philippe, tissot, citizen, watches pakistan, authentic watches, buy watches online" />
+    <meta name="author" content="Pulse Watches" />
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="English" />
+    <meta name="theme-color" content="#c4975b" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://pulsewatches.pk/" />
+    <meta property="og:title" content="Pulse Watches - Premium Luxury Watches in Pakistan" />
+    <meta property="og:description" content="Discover authentic luxury timepieces from world-renowned brands at Pulse Watches. Premium watches with fast delivery across Pakistan." />
+    <meta property="og:image" content="https://pulsewatches.pk/images/hero-bg.jpg" />
+    <meta property="og:site_name" content="Pulse Watches" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://pulsewatches.pk/" />
+    <meta property="twitter:title" content="Pulse Watches - Premium Luxury Watches in Pakistan" />
+    <meta property="twitter:description" content="Discover authentic luxury timepieces from world-renowned brands at Pulse Watches." />
+    <meta property="twitter:image" content="https://pulsewatches.pk/images/hero-bg.jpg" />
+    
+    <!-- Resource Hints - Setup connections FIRST (before everything) -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+    
+    <!-- Preconnect - Establish connections immediately -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- LCP Image - Preload FIRST (highest priority, before CSS) -->
+    <!-- This is the most critical resource for LCP -->
+    <link rel="preload" as="image" href="/images/hero-bg.jpg" fetchpriority="high" />
+    
+    <!-- Critical CSS Inline for Above-the-fold Content -->
+    <style>
+      /* Critical CSS - Above the fold styles - minimal blocking */
+      *{box-sizing:border-box;margin:0;padding:0}
+      html,body,#root{height:100%;margin:0}
+      body{
+        font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+        background:#0e0e10;
+        color:#fff;
+        line-height:1.5;
+        font-size:16px;
+        -webkit-font-smoothing:antialiased;
+        -moz-osx-font-smoothing:grayscale
+      }
+      #root{min-height:100vh;display:flex;flex-direction:column}
+      body{font-display:swap}
+      img{max-width:100%;height:auto;display:block}
+      /* Reserve space for hero - prevents layout shift and ensures LCP element ready */
+      section[role="region"]{min-height:400px;height:400px;position:relative;background:#0e0e10}
+      @media(min-width:768px){section[role="region"]{min-height:500px;height:500px}}
+      /* Optimize hero image rendering */
+      img[fetchpriority="high"]{content-visibility:auto}
+    </style>
+    
+    <!-- Preload Critical JavaScript Entry Point -->
+    <!-- Load after image but in parallel -->
+    <link rel="modulepreload" href="/src/main.jsx" as="script" crossorigin />
+    
+    <!-- Font loading - Fully deferred to not block LCP -->
+    <!-- Load font CSS asynchronously after page load -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&display=swap" as="style" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.onload=null;this.media='all'" />
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&display=swap" rel="stylesheet" /></noscript>
+    <script>
+      // Load fonts after LCP - defer to not block image loading
+      window.addEventListener('load', function() {
+        var fontLink = document.createElement('link');
+        fontLink.rel = 'stylesheet';
+        fontLink.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&display=swap';
+        document.head.appendChild(fontLink);
+      });
+    </script>
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://pulsewatches.pk/" />
+    
+    <!-- Favicon (SVG fallback) -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.svg" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <!-- Defer JavaScript execution to improve FCP and LCP -->
+    <!-- Load JS after LCP image has started loading -->
+    <script>
+      // Defer JavaScript until after critical image starts loading
+      // This ensures LCP image gets network priority
+      (function() {
+        // Use requestIdleCallback to delay JS, but with timeout for faster sites
+        if (window.requestIdleCallback) {
+          requestIdleCallback(function() {
+            const script = document.createElement('script');
+            script.type = 'module';
+            script.src = '/src/main.jsx';
+            script.async = true;
+            document.body.appendChild(script);
+          }, { timeout: 100 });
+        } else {
+          // Fallback: minimal delay to let image start loading
+          setTimeout(function() {
+            const script = document.createElement('script');
+            script.type = 'module';
+            script.src = '/src/main.jsx';
+            script.async = true;
+            document.body.appendChild(script);
+          }, 0);
+        }
+      })();
+    </script>
+  </body>
+</html>

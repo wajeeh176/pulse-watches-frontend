@@ -1,0 +1,160 @@
+/* Performance Optimizations */
+
+/* Prevent layout shifts */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Font loading optimization - prevent text reflow */
+@font-face {
+  font-family: 'Inter';
+  font-display: swap; /* Show fallback immediately, swap when font loads */
+}
+
+/* Prevent layout shifts during font load */
+body {
+  font-display: swap;
+  /* Reserve space to prevent layout shift */
+  min-height: 100vh;
+  /* Prevent font swap layout shift */
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* Ensure images don't cause layout shift */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  /* Reserve space until image loads */
+  aspect-ratio: attr(width) / attr(height);
+}
+
+/* Prevent layout shift for lazy loaded images */
+img[loading="lazy"] {
+  content-visibility: auto;
+}
+
+/* Reserve space for loading states */
+.loading-container {
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Prevent layout shift from product grid */
+.product-grid-container {
+  min-height: 500px;
+}
+
+/* Prevent layout shift from grid containers */
+.MuiGrid-container {
+  min-height: 0; /* Prevent unexpected expansion */
+}
+
+/* Prevent layout shift from cards */
+.MuiCard-root {
+  min-height: 0;
+  contain: layout;
+}
+
+/* Prevent layout shift from buttons */
+button,
+a[role="button"],
+.MuiButton-root {
+  min-height: 36px;
+  contain: layout;
+}
+
+/* Prevent navbar shift */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  transform: translateZ(0); /* Create compositing layer */
+  will-change: scroll-position;
+}
+
+/* Reserve space for dynamic content */
+.product-list-container {
+  min-height: 600px;
+}
+
+/* Skeleton loader to prevent shift */
+.skeleton {
+  background: linear-gradient(90deg, 
+    rgba(255,255,255,0.05) 25%, 
+    rgba(255,255,255,0.1) 50%, 
+    rgba(255,255,255,0.05) 75%
+  );
+  background-size: 200% 100%;
+  animation: loading 1.5s ease-in-out infinite;
+  border-radius: 4px;
+}
+
+@keyframes loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Prevent toast container from causing shifts */
+.Toastify__toast-container {
+  position: fixed !important;
+  pointer-events: none;
+}
+
+.Toastify__toast {
+  pointer-events: auto;
+}
+
+/* Reserve space for text content */
+.typography-reserve {
+  min-height: 1.5em;
+  line-height: 1.5;
+}
+
+/* Prevent shift from tab switching */
+.MuiTabs-root {
+  min-height: 48px;
+}
+
+/* Optimize rendering */
+.card-image-container {
+  contain: layout style paint;
+}
+
+/* Improve scroll performance */
+.product-grid {
+  contain: layout;
+}
+
+/* Reduce repaints */
+.optimized-image {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Prevent layout shift from buttons */
+button, .MuiButton-root {
+  min-height: 36px;
+  contain: layout;
+}
+
+/* Prevent shift from chips/badges */
+.MuiChip-root {
+  min-height: 24px;
+  min-width: 60px;
+}
+
+/* Prevent grid shift */
+.MuiGrid-container {
+  contain: layout;
+}
+
+/* Prevent container shift */
+.MuiContainer-root {
+  contain: layout;
+}

@@ -1,0 +1,40 @@
+{
+  "name": "watchstore-client-v2",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "sideEffects": [
+    "*.css",
+    "*.scss",
+    "./src/styles/**/*",
+    "./src/main.jsx"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "optimize-images": "node scripts/optimize-images.js"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/icons-material": "^7.3.4",
+    "@mui/material": "^7.3.4",
+    "axios": "^1.7.2",
+    "dompurify": "^3.3.1",
+    "quill": "^2.0.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-helmet-async": "^2.0.5",
+    "react-quill": "^2.0.0",
+    "react-router-dom": "^6.22.3",
+    "react-toastify": "^11.0.5",
+    "sharp": "^0.33.2"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.2.1",
+    "terser": "^5.27.2",
+    "vite": "^5.3.1",
+    "vite-plugin-compression": "^0.5.1"
+  }
+}
